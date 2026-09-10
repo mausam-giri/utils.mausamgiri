@@ -1,7 +1,11 @@
-const CACHE_NAME = 'wsc-checklist-v1';
+const CACHE_NAME = 'wsc-checklist-v3';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
+    '/ws-pre-departure/',
+    '/ws-pre-departure/index.html',
+    '/ws-pre-departure/styles.css',
+    '/ws-pre-departure/script.js',
     'https://cdn.tailwindcss.com',
     'https://unpkg.com/htmx.org@1.9.10'
 ];
@@ -42,7 +46,9 @@ self.addEventListener('fetch', (event) => {
             // Otherwise fetch from network
             return fetch(event.request).then((networkResponse) => {
                 // Don't cache non-successful responses
-                if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+                // Allow 'basic' (same-origin) and 'opaque' (cross-origin CDN) responses
+                if (!networkResponse || networkResponse.status !== 200 ||
+                    (networkResponse.type !== 'basic' && networkResponse.type !== 'opaque')) {
                     return networkResponse;
                 }
                 

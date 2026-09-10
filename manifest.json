@@ -2,7 +2,7 @@
   "name": "WorldSkills India - Pre-Departure Checklist",
   "short_name": "WSC Checklist",
   "description": "Pre-departure checklist for WorldSkills Competition 2026",
-  "start_url": "/",
+  "start_url": "/ws-pre-departure/",
   "display": "standalone",
   "background_color": "#f4f6fb",
   "theme_color": "#2563eb",
