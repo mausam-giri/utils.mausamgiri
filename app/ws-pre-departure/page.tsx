@@ -200,7 +200,7 @@ function ItemRow({
       <CheckIcon checked={isChecked} />
       <div className="item-main">
         <div className="item-title-row">
-          <p className="item-text truncate">{item.title}</p>
+          <p className="item-text">{item.title}</p>
           {!isEssential(item.id) && <span className="optional-badge">Optional</span>}
           {hasNote && <MaterialIcon name="chat_bubble" filled className="icon-sm" />}
         </div>
