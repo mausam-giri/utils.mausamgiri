@@ -4,7 +4,7 @@ export interface ChecklistItem {
   desc?: string;
 }
 
-/** Comfort / conditional items — hidden in Focus view unless flagged or searched */
+/** Comfort / conditional items - hidden in Focus view unless flagged or searched */
 export const optionalItemIds = new Set([
   "hotel-voucher-domestic",
   "body-lotion",
@@ -52,7 +52,6 @@ export interface Subsection {
 export interface Section {
   id: string;
   title: string;
-  icon: string;
   subsections: Subsection[];
 }
 
@@ -80,7 +79,6 @@ export const checklistData: Section[] = [
   {
     id: "travel-docs",
     title: "Travel & Documents",
-    icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
     subsections: [
       {
         name: "Domestic Travel",
@@ -108,7 +106,7 @@ export const checklistData: Section[] = [
           {
             id: "passport",
             title: "Passport (Original)",
-            desc: "Keep on you at all times — never pack in checked luggage",
+            desc: "Keep on you at all times - never pack in checked luggage",
           },
           {
             id: "china-visa",
@@ -158,7 +156,7 @@ export const checklistData: Section[] = [
           {
             id: "passport-photos",
             title: "Passport-Size Photos",
-            desc: "2 recent photos — keep with your travel documents",
+            desc: "2 recent photos - keep with your travel documents",
           },
         ],
       },
@@ -177,7 +175,6 @@ export const checklistData: Section[] = [
   {
     id: "nsdc-items",
     title: "NSDC Provided Items",
-    icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
     subsections: [
       {
         name: "Ceremonial & Competition Attire",
@@ -185,12 +182,12 @@ export const checklistData: Section[] = [
           {
             id: "ceremony-attire",
             title: "Ceremony Attire",
-            desc: "As per NSDC allotment — verify size and completeness",
+            desc: "As per NSDC allotment - verify size and completeness",
           },
           {
             id: "tracksuit",
             title: "Track Suit with T-Shirt",
-            desc: "As per NSDC allotment — include matching T-shirt",
+            desc: "As per NSDC allotment - include matching T-shirt",
           },
           {
             id: "trousers-shoes",
@@ -205,7 +202,7 @@ export const checklistData: Section[] = [
           {
             id: "cabin-trolley",
             title: "Cabin Trolley / Bag",
-            desc: "NSDC-issued cabin bag — confirm before departure",
+            desc: "NSDC-issued cabin bag - confirm before departure",
           },
           {
             id: "accessories",
@@ -225,7 +222,7 @@ export const checklistData: Section[] = [
           {
             id: "umbrella",
             title: "Umbrella",
-            desc: "NSDC-issued or personal — useful for rain and sun",
+            desc: "NSDC-issued or personal - useful for rain and sun",
           },
         ],
       },
@@ -244,7 +241,6 @@ export const checklistData: Section[] = [
   {
     id: "clothing",
     title: "Clothing & Footwear",
-    icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
     subsections: [
       {
         name: "Everyday Wear",
@@ -272,7 +268,7 @@ export const checklistData: Section[] = [
           {
             id: "white-socks",
             title: "Socks",
-            desc: "Minimum 4–6 pairs — include sports and everyday pairs",
+            desc: "Minimum 4–6 pairs - include sports and everyday pairs",
           },
           {
             id: "undergarments",
@@ -316,7 +312,6 @@ export const checklistData: Section[] = [
   {
     id: "health-hygiene",
     title: "Health & Hygiene",
-    icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
     subsections: [
       {
         name: "Medicines",
@@ -324,7 +319,7 @@ export const checklistData: Section[] = [
           {
             id: "medications",
             title: "Personal Medications",
-            desc: "Pack in carry-on with prescription — include extras for delays",
+            desc: "Pack in carry-on with prescription - include extras for delays",
           },
           {
             id: "pain-relief",
@@ -354,12 +349,12 @@ export const checklistData: Section[] = [
           {
             id: "deodorant",
             title: "Deodorant / Antiperspirant",
-            desc: "Roll-on or stick — pack in liquids bag if aerosol",
+            desc: "Roll-on or stick - pack in liquids bag if aerosol",
           },
           {
             id: "toothbrush-paste",
             title: "Toothbrush & Toothpaste",
-            desc: "Travel kit — keep in hand luggage for long flights",
+            desc: "Travel kit - keep in hand luggage for long flights",
           },
           {
             id: "paper-soap",
@@ -394,7 +389,7 @@ export const checklistData: Section[] = [
           {
             id: "sunscreen",
             title: "Sunscreen",
-            desc: "SPF 50+ — Shanghai sun can be strong in September",
+            desc: "SPF 50+ - Shanghai sun can be strong in September",
           },
           {
             id: "personal-hygiene",
@@ -413,7 +408,6 @@ export const checklistData: Section[] = [
   {
     id: "food-snacks",
     title: "Food & Snacks",
-    icon: "M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z",
     subsections: [
       {
         name: "Ready-to-Eat Snacks",
@@ -421,7 +415,7 @@ export const checklistData: Section[] = [
           {
             id: "dry-snacks",
             title: "Dry Snacks",
-            desc: "Commercially packaged — theplas, khakhras, or similar",
+            desc: "Commercially packaged - theplas, khakhras, or similar",
           },
           {
             id: "energy-bars",
@@ -450,7 +444,6 @@ export const checklistData: Section[] = [
   {
     id: "tech-power",
     title: "Tech & Power",
-    icon: "M13 10V3L4 14h7v7l9-11h-7z",
     subsections: [
       {
         name: "Chargers & Adapters",
@@ -463,12 +456,12 @@ export const checklistData: Section[] = [
           {
             id: "device-chargers",
             title: "Mobile & Laptop Chargers",
-            desc: "All chargers and cables — label them to avoid mix-ups",
+            desc: "All chargers and cables - label them to avoid mix-ups",
           },
           {
             id: "power-bank",
             title: "Power Bank",
-            desc: "Fully charged — carry in hand luggage only",
+            desc: "Fully charged - carry in hand luggage only",
           },
         ],
       },
@@ -477,7 +470,6 @@ export const checklistData: Section[] = [
   {
     id: "travel-gear",
     title: "Travel Gear & Tools",
-    icon: "M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
     subsections: [
       {
         name: "Bags & Carry",
@@ -490,7 +482,7 @@ export const checklistData: Section[] = [
           {
             id: "water-bottle",
             title: "Water Bottle",
-            desc: "Reusable bottle — refill at hotel and venue stations",
+            desc: "Reusable bottle - refill at hotel and venue stations",
           },
         ],
       },
@@ -505,7 +497,7 @@ export const checklistData: Section[] = [
           {
             id: "safety-pins",
             title: "Safety Pins",
-            desc: "One or two packets — quick fixes for clothing emergencies",
+            desc: "One or two packets - quick fixes for clothing emergencies",
           },
           {
             id: "needle-thread",
@@ -520,7 +512,7 @@ export const checklistData: Section[] = [
           {
             id: "stopwatch",
             title: "Stopwatch",
-            desc: "If applicable for your skill — check competition regulations",
+            desc: "If applicable for your skill - check competition regulations",
           },
           {
             id: "exercise-mat",
@@ -534,7 +526,6 @@ export const checklistData: Section[] = [
   {
     id: "info",
     title: "Itinerary & Reminders",
-    icon: "M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z",
     subsections: [
       {
         name: "Accommodation",
@@ -542,7 +533,7 @@ export const checklistData: Section[] = [
           {
             id: "hotel-info",
             title: "Vienna International Hotel",
-            desc: "Shanghai Hongqiao — save address in English and Chinese",
+            desc: "Shanghai Hongqiao - save address in English and Chinese",
           },
         ],
       },
@@ -557,7 +548,7 @@ export const checklistData: Section[] = [
           {
             id: "passport-accessible",
             title: "Passport Kept Accessible",
-            desc: "Keep passport on you — required for ID checks at venues",
+            desc: "Keep passport on you - required for ID checks at venues",
           },
         ],
       },

@@ -12,6 +12,7 @@ import {
   type ChecklistItem,
   type Section,
 } from "./data";
+import { getSectionIcon } from "./icons";
 
 const STORAGE_KEY = "wsc-smart-checklist";
 const COUNTDOWN_TARGET = new Date("September 19, 2026 00:00:00").getTime();
@@ -80,7 +81,7 @@ function getArrivalStatus(now = new Date()): ArrivalStatus {
   if (now < closeAt) {
     return { key: "open", label: `Window open · closes in ${formatDuration(closeAt.getTime() - now.getTime())}` };
   }
-  return { key: "closed", label: "Ideal window has passed — form may still be required" };
+  return { key: "closed", label: "Ideal window has passed - form may still be required" };
 }
 
 function formatCountdown(now: number) {
@@ -93,10 +94,10 @@ function formatCountdown(now: number) {
 }
 
 function progressMessage(done: number, total: number) {
-  if (done === total) return "You're all set — have a great competition!";
+  if (done === total) return "You're all set - have a great competition!";
   const pct = Math.round((done / total) * 100);
   if (pct < 25) return "Start with documents and essentials";
-  if (pct < 50) return "Good progress — keep going";
+  if (pct < 50) return "Good progress - keep going";
   if (pct < 75) return "More than halfway there";
   return "Almost ready to depart";
 }
@@ -150,6 +151,10 @@ function MaterialIcon({
       {name}
     </span>
   );
+}
+
+function SectionIcon({ sectionId, className = "" }: { sectionId: string; className?: string }) {
+  return <MaterialIcon name={getSectionIcon(sectionId)} className={className} />;
 }
 
 function CheckIcon({ checked }: { checked: boolean }) {
@@ -334,6 +339,7 @@ function CategoryChips({
             onClick={() => onSelect(section.id)}
             aria-label={`${section.title}: ${section.done} of ${section.total} complete`}
           >
+            <SectionIcon sectionId={section.id} className="chip-icon" />
             <span className="chip-label">{label}</span>
             <span className="chip-count">{section.done}/{section.total}</span>
           </button>
@@ -700,7 +706,7 @@ export default function PreDeparturePage() {
                     <p className="focus-subline">
                       {essentialPendingCount > 0
                         ? `${essentialPendingCount} essential${essentialPendingCount === 1 ? "" : "s"} left to pack`
-                        : "All essentials done — optional items remain"}
+                        : "All essentials done - optional items remain"}
                     </p>
                   </div>
                   <div className="focus-progress-badge" aria-hidden="true">
@@ -773,6 +779,7 @@ export default function PreDeparturePage() {
                       onClick={() => toggleSection(section.id)}
                       aria-expanded={!isSectionCollapsed}
                     >
+                      <SectionIcon sectionId={section.id} className="section-icon" />
                       <div className="section-header-text">
                         <h2>{section.title}</h2>
                         <p>{sectionDone} of {sectionItems.length} complete</p>
