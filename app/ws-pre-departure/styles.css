@@ -1,4 +1,4 @@
-:root {
+.ws-root {
     --bg: #303030;
     --app-bar: #212121;
     --surface: #424242;
@@ -13,21 +13,11 @@
     --purple: #bb86fc;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html,
-body {
+.ws-root {
     background: var(--bg);
     color: var(--text);
     font-family: Roboto, sans-serif;
     line-height: 1.5;
-}
-
-body {
     min-height: 100vh;
 }
 
@@ -37,7 +27,7 @@ body {
     flex-direction: column;
 }
 
-header {
+.ws-root header {
     position: sticky;
     top: 0;
     z-index: 40;
@@ -151,7 +141,7 @@ header {
     color: #fff;
 }
 
-main {
+.ws-root main {
     flex: 1;
     width: 100%;
     max-width: 56rem;
@@ -165,7 +155,7 @@ main {
     gap: 1.5rem;
 }
 
-h2 {
+.ws-root h2 {
     font-size: 0.75rem;
     font-weight: 500;
     color: var(--text-hint);
@@ -468,7 +458,7 @@ h2 {
     color: #fff;
 }
 
-footer {
+.ws-root footer {
     border-top: 1px solid var(--divider);
     background: var(--app-bar);
 }
@@ -484,7 +474,7 @@ footer {
     padding: 1.25rem 1rem;
 }
 
-footer a {
+.ws-root footer a {
     text-decoration: none;
 }
 

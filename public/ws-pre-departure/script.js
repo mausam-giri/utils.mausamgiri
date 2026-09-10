@@ -455,3 +455,11 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
+
+window.setFilter = setFilter;
+window.closeNoteModal = closeNoteModal;
+window.saveNote = saveNote;
+window.toggleCheck = toggleCheck;
+window.toggleFlag = toggleFlag;
+window.openNoteModal = openNoteModal;
+window.toggleSubsection = toggleSubsection;
