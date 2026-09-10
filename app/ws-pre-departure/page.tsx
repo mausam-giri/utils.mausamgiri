@@ -15,7 +15,6 @@ import {
 
 const STORAGE_KEY = "wsc-smart-checklist";
 const COUNTDOWN_TARGET = new Date("September 19, 2026 00:00:00").getTime();
-const FOCUS_LIMIT = 8;
 
 type Filter = "all" | "pending" | "completed" | "essential";
 type ViewMode = "focus" | "browse";
@@ -33,12 +32,6 @@ interface ArrivalStatus {
   label: string;
 }
 
-interface ItemContext {
-  sectionId: string;
-  sectionTitle: string;
-  subsection: string;
-}
-
 interface SectionStats {
   id: string;
   title: string;
@@ -53,24 +46,6 @@ function getSubsectionKey(sectionId: string, subsectionName: string) {
 function getSectionKey(sectionId: string) {
   return `section::${sectionId}`;
 }
-
-function buildItemIndex(): Map<string, ItemContext> {
-  const map = new Map<string, ItemContext>();
-  for (const section of checklistData) {
-    for (const sub of section.subsections) {
-      for (const item of sub.items) {
-        map.set(item.id, {
-          sectionId: section.id,
-          sectionTitle: section.title,
-          subsection: sub.name,
-        });
-      }
-    }
-  }
-  return map;
-}
-
-const itemIndex = buildItemIndex();
 
 function getArrivalWindow(card: ArrivalCardType) {
   const arrival = new Date(card.arrivalAt);
@@ -183,7 +158,7 @@ function CheckIcon({ checked }: { checked: boolean }) {
       <input type="checkbox" className="hidden" checked={checked} readOnly tabIndex={-1} />
       <div>
         <svg
-          className={`w-3 h-3 text-white${checked ? "" : " hidden"}`}
+          className={`check-icon-svg${checked ? "" : " hidden"}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -200,8 +175,6 @@ function ItemRow({
   isChecked,
   isFlagged,
   hasNote,
-  context,
-  compact = false,
   onToggleCheck,
   onToggleFlag,
   onOpenNote,
@@ -210,26 +183,23 @@ function ItemRow({
   isChecked: boolean;
   isFlagged: boolean;
   hasNote: boolean;
-  context?: ItemContext;
-  compact?: boolean;
   onToggleCheck: () => void;
   onToggleFlag: () => void;
   onOpenNote: () => void;
 }) {
   return (
     <div
-      className={`item-row${isChecked ? " item-completed" : ""}${isFlagged ? " is-flagged" : ""}${compact ? " item-row-compact" : ""}`}
+      className={`item-row${isChecked ? " item-completed" : ""}${isFlagged ? " is-flagged" : ""}`}
       onClick={onToggleCheck}
     >
       <CheckIcon checked={isChecked} />
-      <div className="flex-1 min-w-0">
-        {context && <p className="item-context">{context.sectionTitle}</p>}
-        <div className="flex items-center gap-2">
+      <div className="item-main">
+        <div className="item-title-row">
           <p className="item-text truncate">{item.title}</p>
           {!isEssential(item.id) && <span className="optional-badge">Optional</span>}
-          {hasNote && <MaterialIcon name="chat_bubble" filled className="text-base" />}
+          {hasNote && <MaterialIcon name="chat_bubble" filled className="icon-sm" />}
         </div>
-        {!compact && item.desc && <p className="item-desc">{item.desc}</p>}
+        {item.desc && <p className="item-desc">{item.desc}</p>}
       </div>
       <div className="item-actions" onClick={(e) => e.stopPropagation()}>
         <button type="button" onClick={onToggleFlag} className="flag-btn" aria-label="Flag item">
@@ -238,7 +208,7 @@ function ItemRow({
         <button
           type="button"
           onClick={onOpenNote}
-          className={hasNote ? "text-brand-300" : ""}
+          className={hasNote ? "has-note-btn" : ""}
           aria-label="Add comment"
         >
           <MaterialIcon name="add_comment" filled={hasNote} />
@@ -275,10 +245,10 @@ function ArrivalCardSection({
           onClick={onToggleCheck}
         >
           <CheckIcon checked={isChecked} />
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
+          <div className="item-main">
+            <div className="item-title-row">
               <p className="item-text">{arrivalCard.title}</p>
-              {hasNote && <MaterialIcon name="chat_bubble" filled className="text-base" />}
+              {hasNote && <MaterialIcon name="chat_bubble" filled className="icon-sm" />}
             </div>
             <p className="item-desc">{arrivalCard.desc}</p>
           </div>
@@ -289,7 +259,7 @@ function ArrivalCardSection({
             <button
               type="button"
               onClick={onOpenNote}
-              className={hasNote ? "text-brand-300" : ""}
+              className={hasNote ? "has-note-btn" : ""}
               aria-label="Add comment"
             >
               <MaterialIcon name="add_comment" filled={hasNote} />
@@ -466,42 +436,6 @@ export default function PreDeparturePage() {
       .filter((s): s is SectionStats => s !== null);
   }, [checks]);
 
-  const flaggedPendingItems = useMemo(() => {
-    return allChecklistItems.filter((item) => flags[item.id] && !checks[item.id]);
-  }, [allChecklistItems, flags, checks]);
-
-  const focusQueue = useMemo(() => {
-    const queue: ChecklistItem[] = [];
-    const seen = new Set<string>();
-
-    const addItem = (item: ChecklistItem) => {
-      if (seen.has(item.id) || checks[item.id]) return;
-      seen.add(item.id);
-      queue.push(item);
-    };
-
-    for (const item of flaggedPendingItems) addItem(item);
-
-    for (const sectionId of sectionPriority) {
-      const section = checklistData.find((s) => s.id === sectionId);
-      if (!section) continue;
-      for (const sub of section.subsections) {
-        for (const item of sub.items) {
-          if (isEssential(item.id)) addItem(item);
-        }
-      }
-    }
-
-    for (const item of allChecklistItems) {
-      if (!isEssential(item.id)) addItem(item);
-    }
-
-    return queue;
-  }, [allChecklistItems, checks, flaggedPendingItems]);
-
-  const visibleFocusItems = focusQueue.slice(0, FOCUS_LIMIT);
-  const hiddenFocusCount = Math.max(focusQueue.length - FOCUS_LIMIT, 0);
-
   const browseSections = useMemo(() => {
     const query = search.trim();
     return checklistData
@@ -571,7 +505,7 @@ export default function PreDeparturePage() {
     });
   }, []);
 
-  const toggleSubsection = useCallback((key: string, defaultCollapsed = true) => {
+  const toggleSubsection = useCallback((key: string, defaultCollapsed = false) => {
     setCollapsed((prev) => {
       const isCollapsed = prev[key] ?? defaultCollapsed;
       return { ...prev, [key]: !isCollapsed };
@@ -620,13 +554,6 @@ export default function PreDeparturePage() {
       ...prev,
       [getSectionKey(sectionId)]: false,
     }));
-  }, []);
-
-  const openBrowseEssentials = useCallback(() => {
-    setViewMode("browse");
-    setFilter("essential");
-    setSearch("");
-    setFocusSectionId(null);
   }, []);
 
   useEffect(() => {
@@ -799,34 +726,6 @@ export default function PreDeparturePage() {
                 </section>
               )}
 
-              {visibleFocusItems.length > 0 && (
-                <section className="focus-block">
-                  <h2 className="section-label">What to do now</h2>
-                  <div className="card focus-card">
-                    {visibleFocusItems.map((item) => (
-                      <ItemRow
-                        key={item.id}
-                        item={item}
-                        isChecked={!!checks[item.id]}
-                        isFlagged={!!flags[item.id]}
-                        hasNote={!!notes[item.id]}
-                        context={itemIndex.get(item.id)}
-                        compact
-                        onToggleCheck={() => toggleCheck(item.id)}
-                        onToggleFlag={() => toggleFlag(item.id)}
-                        onOpenNote={() => openNoteModal(item.id)}
-                      />
-                    ))}
-                  </div>
-                  {hiddenFocusCount > 0 && (
-                    <button type="button" className="show-more-btn" onClick={openBrowseEssentials}>
-                      Show {hiddenFocusCount} more essential item{hiddenFocusCount === 1 ? "" : "s"}
-                      <MaterialIcon name="arrow_forward" />
-                    </button>
-                  )}
-                </section>
-              )}
-
               {doneCount === allTrackableItems.length && (
                 <p className="celebration-state">
                   <MaterialIcon name="celebration" filled />
@@ -887,7 +786,7 @@ export default function PreDeparturePage() {
                     {!isSectionCollapsed && (
                       <div className="section-body">
                         {section.subsections.map((subsection) =>
-                          renderSubsection(section, subsection, true),
+                          renderSubsection(section, subsection, false),
                         )}
                       </div>
                     )}
