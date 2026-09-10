@@ -15,7 +15,7 @@ const checklistData = [
             {
                 name: "International Travel",
                 items: [
-                    { id: "passport", title: "Passport", desc: "Must not expire within 6 months. DO NOT pack in checked baggage." },
+                    { id: "passport", title: "Passport", desc: "DO NOT pack in checked baggage." },
                     { id: "china-visa", title: "China Visa", desc: "Confirmed visa - Physical & digital copies." },
                     { id: "travel-insurance", title: "Travel Insurance", desc: "Policy document with coverage details" },
                     { id: "invitation-letter", title: "Invitation Letter", desc: "Official WorldSkills Competition invitation" },
@@ -71,16 +71,16 @@ const checklistData = [
             {
                 name: "Ceremonial & Comp Attire",
                 items: [
-                    { id: "tracksuit", title: "Track suit / sweatshirt", desc: "Provided by NSDC" },
+                    { id: "tracksuit", title: "Track suit / sweatshirt", desc: " " },
                     { id: "trousers-shoes", title: "Trousers / formal shoes", desc: "For opening ceremony" }
                 ]
             },
             {
                 name: "Luggage & Accessories",
                 items: [
-                    { id: "cabin-trolley", title: "Cabin trolley / bag", desc: "Check dimensions" },
+                    { id: "cabin-trolley", title: "Cabin trolley / bag", desc: " " },
                     { id: "accessories", title: "Accessories Kit", desc: "Lapel pins / adaptor / umbrella" },
-                    { id: "table-flag", title: "Table flag", desc: "For accommodation" }
+                    { id: "table-flag", title: "Table flag", desc: "India Flag" }
                 ]
             },
             {
