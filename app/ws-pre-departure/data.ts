@@ -210,6 +210,11 @@ export const checklistData: Section[] = [
             desc: "Lapel pins and other NSDC-issued accessories",
           },
           {
+            id: "intl-adaptor",
+            title: "International Adaptor / Converter",
+            desc: "Type I or universal adaptor for China (220V)",
+          },
+          {
             id: "merchandise",
             title: "Merchandise",
             desc: "Team merchandise as per NSDC allotment",
@@ -448,11 +453,7 @@ export const checklistData: Section[] = [
       {
         name: "Chargers & Adapters",
         items: [
-          {
-            id: "intl-adaptor",
-            title: "International Adaptor / Converter",
-            desc: "Type I or universal adaptor for China (220V)",
-          },
+          
           {
             id: "device-chargers",
             title: "Mobile & Laptop Chargers",
