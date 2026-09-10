@@ -181,6 +181,73 @@ h2 {
     margin-bottom: 0.75rem;
 }
 
+.action-card {
+    margin-bottom: 0;
+    border-left: 3px solid var(--primary);
+}
+
+.action-card .item-row {
+    cursor: pointer;
+}
+
+.action-card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+    padding: 0.5rem 1rem 1rem 3.15rem;
+}
+
+.action-window-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+}
+
+.action-meta {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.action-status {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--primary);
+}
+
+.action-status[data-status="open"] {
+    color: #81c784;
+}
+
+.action-status[data-status="closed"] {
+    color: var(--text-hint);
+}
+
+.action-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.55rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 4px;
+    background: var(--primary-dark);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.action-link:hover {
+    background: var(--primary);
+}
+
+.action-link .material-icon {
+    font-size: 1rem;
+    color: inherit;
+}
+
 .card:last-child {
     margin-bottom: 0;
 }
@@ -402,20 +469,57 @@ h2 {
 }
 
 footer {
-    padding: 1.25rem;
-    text-align: center;
     border-top: 1px solid var(--divider);
     background: var(--app-bar);
 }
 
+.footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    max-width: 56rem;
+    margin: 0 auto;
+    padding: 1.25rem 1rem;
+}
+
 footer a {
-    font-size: 0.75rem;
-    color: var(--text-hint);
     text-decoration: none;
 }
 
-footer a:hover {
+.explore-tools {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.explore-tools:hover {
     color: var(--text);
+}
+
+.credit {
+    display: flex;
+    flex-direction: column;
+    /* align-items: flex-end; */
+    line-height: 1.25;
+}
+
+.credit .name {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.credit .site {
+    font-size: 0.6875rem;
+    color: var(--text-hint);
+}
+
+.credit:hover .name {
+    color: var(--text);
+}
+
+.credit:hover .site {
+    color: var(--text-secondary);
 }
 
 .empty-state {

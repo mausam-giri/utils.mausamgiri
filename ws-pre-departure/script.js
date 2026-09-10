@@ -1,3 +1,14 @@
+const arrivalCard = {
+    id: "foreigner-arrival-card",
+    title: "Online Foreigner Arrival Card",
+    desc: "Fill 72 to 24 hours before arrival in China.",
+    href: "https://s.nia.gov.cn/ArrivalCardFillingPC/entry-registration-home",
+    // Depart India morning 19 Sep; same-day evening arrival in China.
+    arrivalAt: "2026-09-19T19:00:00+08:00",
+    openHoursBefore: 72,
+    closeHoursBefore: 24
+};
+
 const checklistData = [
     {
         id: "travel-docs",
@@ -144,9 +155,65 @@ function saveState() {
 }
 
 function getAllItems() {
-    return checklistData.flatMap(section =>
-        section.subsections.flatMap(sub => sub.items)
-    );
+    return [
+        arrivalCard,
+        ...checklistData.flatMap(section =>
+            section.subsections.flatMap(sub => sub.items)
+        )
+    ];
+}
+
+function getArrivalWindow() {
+    const arrival = new Date(arrivalCard.arrivalAt);
+    const openAt = new Date(arrival.getTime() - arrivalCard.openHoursBefore * 3600 * 1000);
+    const closeAt = new Date(arrival.getTime() - arrivalCard.closeHoursBefore * 3600 * 1000);
+    return { arrival, openAt, closeAt };
+}
+
+function formatChinaDate(date) {
+    return new Intl.DateTimeFormat("en-GB", {
+        timeZone: "Asia/Shanghai",
+        day: "numeric",
+        month: "short"
+    }).format(date);
+}
+
+function formatDuration(ms) {
+    const total = Math.max(0, Math.floor(ms / 1000));
+    const d = Math.floor(total / 86400);
+    const h = Math.floor((total % 86400) / 3600);
+    if (d > 0) return `${d}d ${h}h`;
+    const m = Math.floor((total % 3600) / 60);
+    if (h > 0) return `${h}h ${String(m).padStart(2, "0")}m`;
+    return `${m}m`;
+}
+
+function getArrivalStatus(now = new Date()) {
+    const { openAt, closeAt } = getArrivalWindow();
+    if (now < openAt) {
+        return {
+            key: "upcoming",
+            label: `Opens in ${formatDuration(openAt - now)}`
+        };
+    }
+    if (now < closeAt) {
+        return {
+            key: "open",
+            label: `Window open · closes in ${formatDuration(closeAt - now)}`
+        };
+    }
+    return {
+        key: "closed",
+        label: "Ideal window has passed — form may still be required"
+    };
+}
+
+function updateArrivalCardStatus() {
+    const el = document.getElementById("arrival-card-status");
+    if (!el) return;
+    const status = getArrivalStatus();
+    el.textContent = status.label;
+    el.dataset.status = status.key;
 }
 
 function matchesFilter(item) {
@@ -166,11 +233,62 @@ function toggleSubsection(key) {
     render();
 }
 
+function renderArrivalCard() {
+    if (!matchesFilter(arrivalCard)) return "";
+
+    const { openAt, closeAt } = getArrivalWindow();
+    const status = getArrivalStatus();
+    const isChecked = !!appState.checks[arrivalCard.id];
+    const isFlagged = !!appState.flags[arrivalCard.id];
+    const hasNote = !!appState.notes[arrivalCard.id];
+
+    return `
+        <section class="action-section">
+            <div class="card action-card ${isChecked ? "is-done" : ""} ${isFlagged ? "is-flagged" : ""}">
+                <div class="item-row ${isChecked ? "item-completed" : ""} ${isFlagged ? "is-flagged" : ""}" id="row-${arrivalCard.id}" onclick="toggleCheck('${arrivalCard.id}')">
+                    <div class="custom-checkbox pointer-events-none">
+                        <input type="checkbox" class="hidden" ${isChecked ? "checked" : ""} tabindex="-1">
+                        <div>
+                            <svg class="w-3 h-3 text-white ${isChecked ? "" : "hidden"}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2">
+                            <p class="item-text">${arrivalCard.title}</p>
+                            ${hasNote ? `<span class="material-icon material-icon-filled text-base" title="Has comment">chat_bubble</span>` : ""}
+                        </div>
+                        <p class="item-desc">${arrivalCard.desc}</p>
+                    </div>
+                    <div class="item-actions" onclick="event.stopPropagation()">
+                        <button type="button" onclick="toggleFlag('${arrivalCard.id}')" class="flag-btn" aria-label="Flag item">
+                            <span class="material-icon">flag</span>
+                        </button>
+                        <button type="button" onclick="openNoteModal('${arrivalCard.id}')" class="${hasNote ? "text-brand-300" : ""}" aria-label="Add comment">
+                            <span class="material-icon ${hasNote ? "material-icon-filled" : ""}">add_comment</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="action-card-body">
+                    <p class="action-window-row">
+                        <span class="action-meta">Fill window: ${formatChinaDate(openAt)} – ${formatChinaDate(closeAt)}</span>
+                        <span class="action-status" id="arrival-card-status" data-status="${status.key}">${status.label}</span>
+                    </p>
+                    <a class="action-link" href="${arrivalCard.href}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                        Open official form
+                        <span class="material-icon">open_in_new</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    `;
+}
+
 function render() {
     const container = document.getElementById('checklist-container');
     container.innerHTML = '';
 
-    let hasVisibleItems = false;
+    let hasVisibleItems = matchesFilter(arrivalCard);
+    container.innerHTML = renderArrivalCard();
 
     checklistData.forEach(section => {
         const subsectionsHtml = section.subsections.map(subsection => {
@@ -210,6 +328,7 @@ function render() {
 
     updateProgress();
     updateFilterButtons();
+    updateArrivalCardStatus();
 }
 
 function createItemHTML(item) {
@@ -324,6 +443,7 @@ function startCodeCountdown() {
         if (elCountdown) {
             elCountdown.textContent = `${d}d ${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`;
         }
+        updateArrivalCardStatus();
     }
 
     update();
