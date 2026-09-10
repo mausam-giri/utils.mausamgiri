@@ -211,8 +211,8 @@ export const checklistData: Section[] = [
           },
           {
             id: "intl-adaptor",
-            title: "International Adaptor / Converter",
-            desc: "Type I or universal adaptor for China (220V)",
+            title: "International Adaptor",
+            desc: "Type I or Universal adaptor for China",
           },
           {
             id: "merchandise",
